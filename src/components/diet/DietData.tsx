@@ -41,7 +41,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import React, { useEffect, useState } from "react";
 
-import DeleteRow from "../DeleteRow";
+import DeleteRow from "@/components/table/DeleteRow";
 
 import { Badge } from "../ui/badge";
 import EditDiet from "./EditDiet";

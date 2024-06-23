@@ -42,7 +42,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import DeleteRow from "../DeleteRow";
+import DeleteRow from "@/components/table/DeleteRow";
 
 import EditDiet from "./EditFood";
 import { ProgramToolbar } from "./FoodToolbar";

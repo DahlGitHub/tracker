@@ -8,9 +8,9 @@ import {
 } from '../ui/dropdown-menu';
 import { Input } from '../ui/input';
 import { Eye } from 'lucide-react';
-import DeleteCollection from '../DeleteCollection';
+import DeleteCollection from '@/components/table/DeleteCollection';
 import AddFood from './AddFood';
-import { FacetedFilter } from '../FacetedFilter';
+import { FacetedFilter } from '@/components/table/FacetedFilter';
 
 interface ProgramToolbarProps<TData> {
   table: Table<TData>;
