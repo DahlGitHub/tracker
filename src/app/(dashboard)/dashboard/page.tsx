@@ -13,7 +13,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import ProgressSection from "@/components/dashboard/ProgressSection";
-import DateSelector from "@/components/dashboard/DateSelector";
 import { Card, CardContent } from "@/components/ui/card";
 import RecentFoodTable from "@/components/dashboard/RecentFoodTable";
 import RecentWorkoutTable from "@/components/dashboard/RecentWorkoutData";
@@ -27,7 +26,7 @@ import RecentWorkoutData from "@/components/dashboard/RecentWorkoutData";
 import TopWorkoutData from "@/components/dashboard/TopWorkoutData";
 import { RadarChart } from "recharts";
 import Radarchart from "@/components/dashboard/Radarchart";
-import { DatePickerDemo } from "@/components/dashboard/DatePickerDemo";
+import { DatePicker } from "@/components/dashboard/DatePicker";
 
 export default function DashboardPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -75,7 +74,7 @@ export default function DashboardPage() {
       </Breadcrumb>
       <Card className="rounded-lg border-none mt-6">
         <CardContent className="p-6 bg-zinc-900 rounded-lg">
-          <DatePickerDemo selectedDate={selectedDate} onChange={setSelectedDate} />
+          <DatePicker selectedDate={selectedDate} onChange={setSelectedDate} />
   
           <div className="pt-4">
             <ProgressSection selectedDate={selectedDate} />

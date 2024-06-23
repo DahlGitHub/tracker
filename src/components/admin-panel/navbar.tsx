@@ -1,5 +1,4 @@
 
-import { UserNav } from "@/components/admin-panel/user-nav";
 import { SheetMenu } from "@/components/admin-panel/sheet-menu";
 import { UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "../ModeToggle";

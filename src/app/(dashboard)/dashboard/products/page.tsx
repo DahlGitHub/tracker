@@ -3,7 +3,6 @@
 import Link from "next/link";
 
 import { DataTable, Program, columns } from '@/components/products/ProductsData';
-import PlaceholderContent from "@/components/demo/placeholder-content";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
 import {
   Breadcrumb,
