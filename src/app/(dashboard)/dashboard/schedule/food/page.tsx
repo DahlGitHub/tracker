@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { DataTable, Food, columns } from "@/components/food/FoodData";
+import { DataTable, Food, columns } from "@/components/schedule/food/FoodData";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
 import {
   Breadcrumb,
