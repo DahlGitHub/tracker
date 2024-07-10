@@ -8,18 +8,12 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../firebase";
 import ProgressCard from "@/components/dashboard/Progress";
-
+import { fetchGoals, Goals } from "./GoalsData";
+import { useSession } from "@clerk/nextjs";
 
 interface ProgressSectionProps {
   selectedDate: Date;
 }
-
-const goals = {
-  kcal: 2000,
-  proteins: 150,
-  fat: 70,
-  carbs: 250,
-};
 
 const getStartOfDayTimestamp = (date: Date) => {
   const start = new Date(date);
@@ -34,12 +28,25 @@ const getEndOfDayTimestamp = (date: Date) => {
 };
 
 const ProgressSection: React.FC<ProgressSectionProps> = ({ selectedDate }) => {
+  const { session } = useSession();
+  const [goals, setGoals] = useState<Goals>({ kcal: 0, proteins: 0, fat: 0, carbs: 0 });
   const [dailyIntake, setDailyIntake] = useState({
     totalKcal: 0,
     totalProteins: 0,
     totalFat: 0,
     totalCarbs: 0,
   });
+
+  useEffect(() => {
+    const fetchUserGoals = async () => {
+      if (session?.user?.id) {
+        const fetchedGoals = await fetchGoals(session.user.id);
+        setGoals(fetchedGoals);
+      }
+    };
+
+    fetchUserGoals();
+  }, [session]);
 
   useEffect(() => {
     const fetchDailyIntake = async () => {
