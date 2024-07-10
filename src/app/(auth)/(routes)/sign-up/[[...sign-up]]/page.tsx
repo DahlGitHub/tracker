@@ -1,3 +1,4 @@
+import { BackgroundBeams } from "@/components/ui/background-beams";
 import { SignUp } from "@clerk/nextjs";
 
 import { Activity } from "lucide-react";
@@ -29,7 +30,7 @@ export default function Page() {
           </div>
         </section>
 
-        <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
+        <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6 relative">
           <div className="max-w-xl lg:max-w-3xl">
             <div className="relative -mt-16 block lg:hidden">
               <a
@@ -50,6 +51,7 @@ export default function Page() {
             </div>
             <div className="flex justify-center p-4">
               <SignUp forceRedirectUrl={"/dashboard"} />
+              <BackgroundBeams />
             </div>
           </div>
         </main>
