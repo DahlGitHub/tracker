@@ -50,6 +50,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import { CategoryOption, IconOption, categoryOptions, iconOptions } from "@/lib/icons";
 
 export type Diet = {
+  id: any;
   docId: string;
   name: string;
   icon: string;
