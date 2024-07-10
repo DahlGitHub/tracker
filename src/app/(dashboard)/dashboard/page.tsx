@@ -24,9 +24,10 @@ import { useSession } from "@clerk/nextjs";
 import Barchart from "@/components/dashboard/Barchart";
 import RecentWorkoutData from "@/components/dashboard/RecentWorkoutData";
 import TopWorkoutData from "@/components/dashboard/TopWorkoutData";
-import { RadarChart } from "recharts";
 import Radarchart from "@/components/dashboard/Radarchart";
 import { DatePicker } from "@/components/dashboard/DatePicker";
+import ProfileCard from "@/components/dashboard/ProfileCard";
+import Linechart from "@/components/dashboard/Linechart";
 
 export default function DashboardPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -75,12 +76,10 @@ export default function DashboardPage() {
       <Card className="rounded-lg border-none mt-6">
         <CardContent className="p-6 bg-zinc-900 rounded-lg">
           <DatePicker selectedDate={selectedDate} onChange={setSelectedDate} />
-  
-          <div className="pt-4">
-            <ProgressSection selectedDate={selectedDate} />
-          </div>
-          <div className="flex flex-col-4 gap-4">
-            <div className="w-2/3">
+
+          <div className="pt-4 flex flex-row gap-4">
+            <div className="w-3/4">
+              <ProgressSection selectedDate={selectedDate} />
               <Tabs defaultValue="table">
                 <TabsList>
                   <TabsTrigger value="table">Table</TabsTrigger>
@@ -93,15 +92,15 @@ export default function DashboardPage() {
                   <Barchart />
                 </TabsContent>
               </Tabs>
+              <Linechart />
             </div>
-
-            <div className="w-1/3">
+            <div className="w-1/4">
+              <ProfileCard />
               <Tabs defaultValue="recent">
                 <TabsList>
                   <TabsTrigger value="recent">Recent</TabsTrigger>
                   <TabsTrigger value="radar">Radar</TabsTrigger>
-                  <TabsTrigger value="top">Top</TabsTrigger>
-
+                  <TabsTrigger value="top" disabled>Top</TabsTrigger>
                 </TabsList>
                 <TabsContent value="recent">
                   <RecentWorkoutData />
@@ -112,7 +111,6 @@ export default function DashboardPage() {
                 <TabsContent value="top">
                   <TopWorkoutData />
                 </TabsContent>
-
               </Tabs>
             </div>
           </div>

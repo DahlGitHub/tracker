@@ -23,7 +23,7 @@ const TopWorkoutData: React.FC = () => {
   useEffect(() => {
     const fetchTopWorkouts = async () => {
       const q = query(
-        collection(db, "workouts"),
+        collection(db, "workoutSchedules"),
         orderBy("count", "desc"),
         limit(5)
       ); // Assuming `count` field exists for top workouts

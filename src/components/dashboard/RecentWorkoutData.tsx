@@ -17,13 +17,16 @@ interface WorkoutData {
   count?: number;
 }
 
+// Fake data for recent workouts
+
 const RecentWorkoutData: React.FC = () => {
   const [recentWorkouts, setRecentWorkouts] = useState<WorkoutData[]>([]);
+
 
   useEffect(() => {
     const fetchRecentWorkouts = async () => {
       const q = query(
-        collection(db, "workouts"),
+        collection(db, "workoutSchedules"),
         orderBy("date", "desc"),
         limit(5)
       );
@@ -35,6 +38,7 @@ const RecentWorkoutData: React.FC = () => {
 
     fetchRecentWorkouts();
   }, []);
+  
 
   return (
     <WorkoutTable

@@ -79,9 +79,11 @@ const WorkoutTable: React.FC<WorkoutTableProps> = ({
                   </div>
                 </TableCell>
                 <TableCell className="text-end py-4">
+                  <div className="py-1 text-xs">
                   {type === "recent"
                     ? moment(workout.date.toDate()).format("ddd, D. MMM")
                     : workout.count || "-"}
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
