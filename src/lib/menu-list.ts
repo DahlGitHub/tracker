@@ -62,7 +62,7 @@ export function getMenuList(pathname: string): Group[] {
           submenus: []
         },
         {
-          href: "/dashboard",
+          href: "/dashboard/workout",
           label: "Workout",
           active: pathname === "/dashboard/workout",
           icon: Dumbbell,
@@ -81,7 +81,7 @@ export function getMenuList(pathname: string): Group[] {
               icon: SquarePen,
             },
             {
-              href: "/dashboard",
+              href: "/dashboard/schedule/workout",
               label: "Workout",
               active: pathname === "/schedule/workout",
               icon: SquarePen,
