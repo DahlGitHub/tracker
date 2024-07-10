@@ -1,109 +1,81 @@
 "use client";
 
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import {
-  Bar,
-  BarChart,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-} from "recharts";
-import { Card } from "../ui/card";
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import moment from "moment";
+
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { toDate } from "date-fns";
+
+const chartConfig = {
+
+  desktop: {
+    label: "Desktop",
+    color: "hsl(var(--chart-1))",
+  },
+  mobile: {
+    label: "Mobile",
+    color: "hsl(var(--chart-2))",
+  },
+} satisfies ChartConfig;
 
 // Sample data for the most recent dates
 const recentData = [
-  {
-    date: moment().subtract(4, "days").format("ddd, D. MMM"),
-    proteins: Math.floor(Math.random() * 50) + 100, // Proteins range from 100 to 150
-    calories: Math.floor(Math.random() * 500) + 1500, // Calories range from 1500 to 2000
-  },
-  {
-    date: moment().subtract(3, "days").format("ddd, D. MMM"),
-    proteins: Math.floor(Math.random() * 50) + 100,
-    calories: Math.floor(Math.random() * 500) + 1500,
-  },
-  {
-    date: moment().subtract(2, "days").format("ddd, D. MMM"),
-    proteins: Math.floor(Math.random() * 50) + 100,
-    calories: Math.floor(Math.random() * 500) + 1500,
-  },
-  {
-    date: moment().subtract(1, "days").format("ddd, D. MMM"),
-    proteins: Math.floor(Math.random() * 50) + 100,
-    calories: Math.floor(Math.random() * 500) + 1500,
-  },
-  {
-    date: moment().format("ddd, D. MMM"),
-    proteins: Math.floor(Math.random() * 50) + 100,
-    calories: Math.floor(Math.random() * 500) + 1500,
-  },
+  { date: moment().subtract(4), desktop: 186, mobile: 80 },
+  { date: moment().subtract(4), desktop: 305, mobile: 200 },
+  { date: moment().subtract(4), desktop: 237, mobile: 120 },
+  { date: moment().subtract(4), desktop: 73, mobile: 190 },
+  { date: moment().subtract(4), desktop: 209, mobile: 130 },
+  { date: moment().subtract(4), desktop: 186, mobile: 80 },
+  { date: moment().subtract(4), desktop: 305, mobile: 200 },
 ];
 
 const Barchart = () => {
   return (
-    <Card className="p-2">
-      <ResponsiveContainer width="100%" height={470}>
-        <BarChart
-          data={recentData}
-          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-        >
-          <XAxis
-            dataKey="date"
-            stroke="#888888"
-            fontSize={12}
-            tickLine={false}
-            axisLine={false}
-          />
-          <YAxis
-            yAxisId="left"
-            stroke="#888888"
-            fontSize={12}
-            tickLine={false}
-            axisLine={false}
-            tickFormatter={(value) => `${value}`}
-            domain={[0, 2000]}
-            ticks={[0, 500, 1000, 1500, 2000]}
-          />
-          <YAxis
-            yAxisId="right"
-            orientation="right"
-            stroke="#888888"
-            fontSize={12}
-            tickLine={false}
-            axisLine={false}
-            tickFormatter={(value) => `${value}`}
-            domain={[0, 200]}
-            ticks={[0, 50, 100, 150, 200]}
-          />
-          <Tooltip
-            position={{ y: 0 }}
-            cursor={false}
-            contentStyle={{
-              backgroundColor: "rgba(0, 0, 0, 0.8)",
-              color: "#fff",
-            }}
-          />
-          <Legend iconType="line" verticalAlign="top" height={36} />
-          <Bar
-            yAxisId="left"
-            dataKey="calories"
-            fill="#8884d8"
-            name="Calories"
-            radius={[4, 4, 0, 0]}
-            barSize={30}
-          />
-          <Bar
-            yAxisId="right"
-            dataKey="proteins"
-            fill="#82ca9d"
-            name="Proteins"
-            radius={[4, 4, 0, 0]}
-            barSize={30}
-          />
-        </BarChart>
-      </ResponsiveContainer>
+    <Card>
+      <CardHeader>
+      <div className="grid gap-2">
+          <CardTitle>Recent Meals</CardTitle>
+          <CardDescription>
+            Your recent meals and total nutritional intake
+          </CardDescription>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <ChartContainer config={chartConfig} className="h-[400px] w-full">
+          <BarChart accessibilityLayer data={recentData} barSize={15}>
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickLine={false}
+              tickMargin={2}
+              axisLine={false}
+              tickFormatter={(value) => moment(value).format("MMM, YYYY")}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="dot" />}
+            />
+            <ChartLegend content={<ChartLegendContent />} />
+            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={2} />
+            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={2} />
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
     </Card>
   );
 };
