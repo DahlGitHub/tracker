@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
-import { auth, db } from "../../../firebase";
+import { auth, db } from "../../../../firebase";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,9 +26,9 @@ import {
 } from "@/components/ui/select";
 import { Plus, Loader2, CalendarIcon } from "lucide-react";
 
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { cn } from "@/lib/utils";
-import { Calendar } from "../ui/calendar";
+import { Calendar } from "../../ui/calendar";
 import { useSession } from "@clerk/nextjs";
 
 type DietItem = {
@@ -54,7 +54,7 @@ const FormSchema = z.object({
   breakfast: z.any(),
   lunch: z.any(),
   dinner: z.any(),
-  supper: z.any()
+  supper: z.any(),
 });
 
 const defaultMealDetails = {
@@ -91,7 +91,7 @@ const FoodForm = () => {
   const [diets, setDiets] = useState<Diet[]>([]);
   const [open, setOpen] = React.useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const { session } = useSession() ;
+  const { session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -131,7 +131,9 @@ const FoodForm = () => {
     try {
       const getMealDetails = (mealId: string) => {
         const meal = diets.find((diet) => diet.id === mealId);
-        return meal ? { id: meal.id, icon:meal.icon, name: meal.name, items: meal.items } : defaultMealDetails;
+        return meal
+          ? { id: meal.id, icon: meal.icon, name: meal.name, items: meal.items }
+          : defaultMealDetails;
       };
       const breakfast = getMealDetails(data.breakfast);
       const lunch = getMealDetails(data.lunch);

@@ -46,11 +46,11 @@ import DeleteRow from "@/components/table/DeleteRow";
 
 import EditDiet from "./EditFood";
 import { ProgramToolbar } from "./FoodToolbar";
-import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
+import { Popover, PopoverTrigger, PopoverContent } from "../../ui/popover";
 import { Timestamp } from "firebase/firestore";
-import { Badge } from "../ui/badge";
+import { Badge } from "../../ui/badge";
 import { iconOptions, IconOption } from "@/lib/icons";
-import MealCell from "../MealCell";
+import MealCell from "../../MealCell";
 
 interface MealCellProps {
   mealName: string;
