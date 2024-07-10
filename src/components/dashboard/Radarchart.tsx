@@ -1,15 +1,19 @@
+import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts"
 import {
-    Radar,
-    RadarChart,
-    ResponsiveContainer,
-    PolarGrid,
-    PolarAngleAxis,
-    PolarRadiusAxis,
-    Legend,
-    Tooltip,
-  } from "recharts";
-  import { Card } from "../ui/card";
-  
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart"
+import { TrendingUp } from "lucide-react";
 // Sample raw data
 const rawData = [
     { subject: "Chest", count: 15 },
@@ -20,6 +24,13 @@ const rawData = [
     { subject: "Legs", count: 14 },
   ];
   
+  const chartConfig = {
+    desktop: {
+      label: "Desktop",
+      color: "hsl(var(--chart-1))",
+    },
+  } satisfies ChartConfig
+
   // Calculate the maximum count
   const maxCount = Math.max(...rawData.map(item => item.count));
   
@@ -32,31 +43,46 @@ const rawData = [
   
   const Radarchart = () => {
     return (
-      <Card className="p-4 shadow-lg rounded-lg">
-        <ResponsiveContainer width="100%" height={350}>
-          <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
-            <PolarGrid stroke="#ccc" />
-            <PolarAngleAxis dataKey="subject" stroke="#888" fontSize={14} />
-            <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#888" />
-            <Radar
-              name="Muscle Group"
-              dataKey="Percentage"
-              stroke="#73ffa8"
-              strokeWidth={2}
-              fill="#82ca9d"
-              fillOpacity={0.6}
-              dot={{ fill: '#82ca9d', r: 3 }}
+      <Card>
+      <CardHeader className="items-center pb-4">
+        <CardTitle>Radar Chart - Grid Circle</CardTitle>
+        <CardDescription>
+          Showing total visitors for the last 6 months
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="pb-0">
+        <ChartContainer
+          config={chartConfig}
+          className="mx-auto aspect-square max-h-[250px]"
+        >
+          <RadarChart data={rawData}>
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
             />
-            <Legend verticalAlign="top" iconType="line" height={36} />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "rgba(0, 0, 0, 0.8)",
-                color: "#fff",
+            <PolarGrid gridType="circle" />
+            <PolarAngleAxis dataKey="subject" />
+            <Radar
+              dataKey="count"
+              fill="var(--color-desktop)"
+              fillOpacity={0.6}
+              dot={{
+                r: 4,
+                fillOpacity: 1,
               }}
             />
           </RadarChart>
-        </ResponsiveContainer>
-      </Card>
+        </ChartContainer>
+      </CardContent>
+      <CardFooter className="flex-col gap-2 text-sm">
+        <div className="flex items-center gap-2 font-medium leading-none">
+          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+        </div>
+        <div className="flex items-center gap-2 leading-none text-muted-foreground">
+          January - June 2024
+        </div>
+      </CardFooter>
+    </Card>
     );
   };
   
