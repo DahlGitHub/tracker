@@ -9,10 +9,10 @@ export interface CategoryOption {
 }
 
 export const categoryOptions: CategoryOption[] = [
-    { value: 'breakfast', label: 'Breakfast', icon: Apple, color: 'bg-yellow-100 text-yellow-700'},
-    { value: 'lunch', label: 'Lunch', icon: Banana, color: 'bg-green-100 text-green-700'},
-    { value: 'dinner', label: 'Dinner', icon: Bean, color: 'bg-red-100 text-red-700'},
-    { value: 'supper', label: 'Supper', icon: Beef, color: 'bg-blue-100 text-blue-700'},
+    { value: 'Breakfast', label: 'Breakfast', icon: Apple, color: 'bg-yellow-100 text-yellow-700'},
+    { value: 'Lunch', label: 'Lunch', icon: Banana, color: 'bg-green-100 text-green-700'},
+    { value: 'Dinner', label: 'Dinner', icon: Bean, color: 'bg-red-100 text-red-700'},
+    { value: 'Supper', label: 'Supper', icon: Beef, color: 'bg-blue-100 text-blue-700'},
 ];
 
 export interface IconOption {

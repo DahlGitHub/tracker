@@ -91,6 +91,18 @@ export function getMenuList(pathname: string): Group[] {
       ]
     },
     {
+      groupLabel: "Hevy",
+      menus: [
+        {
+          href: "/dashboard/hevy",
+          label: "",
+          active: pathname === "/dashboard/hevy",
+          icon: SquarePen,
+          submenus: []
+        }
+      ]
+    },
+    {
       groupLabel: "Settings",
       menus: [
         {
