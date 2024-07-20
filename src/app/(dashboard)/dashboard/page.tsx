@@ -28,6 +28,8 @@ import Radarchart from "@/components/dashboard/Radarchart";
 import { DatePicker } from "@/components/dashboard/DatePicker";
 import ProfileCard from "@/components/dashboard/ProfileCard";
 import Linechart from "@/components/dashboard/Linechart";
+import BarchartTwo from "@/components/dashboard/BarchartTwo";
+import FoodSearch from "@/components/FoodSearch";
 
 export default function DashboardPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -75,45 +77,45 @@ export default function DashboardPage() {
       </Breadcrumb>
       <Card className="rounded-lg border-none mt-6">
         <CardContent className="p-6 bg-zinc-900 rounded-lg">
-          <DatePicker selectedDate={selectedDate} onChange={setSelectedDate} />
+          <Tabs defaultValue="overview">
+            <div className="flex flex-row gap-2">
+              <TabsList>
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="table">Table</TabsTrigger>
+              </TabsList>
+              <DatePicker
+                selectedDate={selectedDate}
+                onChange={setSelectedDate}
+              />
+              
+            </div>
+            <TabsContent value="overview">
+              <div className="pt-4 flex flex-row gap-4">
+                <div className="w-3/4">
+                  <ProgressSection selectedDate={selectedDate} />
+                  <div className="grid gap-4">
+                    <Barchart />
 
-          <div className="pt-4 flex flex-row gap-4">
-            <div className="w-3/4">
-              <ProgressSection selectedDate={selectedDate} />
-              <Tabs defaultValue="table">
-                <TabsList>
-                  <TabsTrigger value="table">Table</TabsTrigger>
-                  <TabsTrigger value="chart">Chart</TabsTrigger>
-                </TabsList>
-                <TabsContent value="table">
-                  <RecentFoodTable />
-                </TabsContent>
-                <TabsContent value="chart">
-                  <Barchart />
-                </TabsContent>
-              </Tabs>
-              <Linechart />
-            </div>
-            <div className="w-1/4">
-              <ProfileCard />
-              <Tabs defaultValue="recent">
-                <TabsList>
-                  <TabsTrigger value="recent">Recent</TabsTrigger>
-                  <TabsTrigger value="radar">Radar</TabsTrigger>
-                  <TabsTrigger value="top" disabled>Top</TabsTrigger>
-                </TabsList>
-                <TabsContent value="recent">
-                  <RecentWorkoutData />
-                </TabsContent>
-                <TabsContent value="radar">
+                    <Linechart />
+                  </div>
+                </div>
+                <div className="w-1/4">
+                  <ProfileCard />
                   <Radarchart />
-                </TabsContent>
-                <TabsContent value="top">
-                  <TopWorkoutData />
-                </TabsContent>
-              </Tabs>
-            </div>
-          </div>
+                </div>
+              </div>
+            </TabsContent>
+            <TabsContent value="table">
+              <div className="pt-4 flex flex-row gap-4">
+                <div className="w-3/4">
+                  <RecentFoodTable />
+                </div>
+                <div className="w-1/4">
+                  <RecentWorkoutData />
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
     </ContentLayout>
