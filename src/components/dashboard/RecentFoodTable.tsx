@@ -8,6 +8,7 @@ import {
   limit,
   getDocs,
   Timestamp,
+  where,
 } from "firebase/firestore";
 import { db } from "../../../firebase"; // Adjust the import path according to your project structure
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +31,7 @@ import {
 import moment from "moment";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/progress";
 import MealCell from "../MealCell";
+import { useSession } from "@clerk/nextjs";
 
 interface Meal {
   icon: string;
@@ -49,35 +51,38 @@ interface MealData {
 
 export default function Component() {
   const [mealData, setMealData] = useState<MealData[]>([]);
-
+  const { session } = useSession();
   const goalKcal = 2000;
   const goalProteins = 150;
 
   useEffect(() => {
     const fetchMealData = async () => {
-      const q = query(
-        collection(db, "food"),
-        orderBy("date", "desc"),
-        limit(5)
-      );
-      const querySnapshot = await getDocs(q);
-      const fetchedData: MealData[] = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        fetchedData.push({
-          date: data.date,
-          breakfast: data.breakfast,
-          lunch: data.lunch,
-          dinner: data.dinner,
-          supper: data.supper,
-          totalKcal: data.totalKcal,
-          totalProteins: data.totalProteins,
+      if (session && session.user) {
+        const q = query(
+          collection(db, "food"),
+          where("userID", "==", session.user.id),
+          orderBy("date", "desc"),
+          limit(7)
+        );
+        const querySnapshot = await getDocs(q);
+        const fetchedData: MealData[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          fetchedData.push({
+            date: data.date,
+            breakfast: data.breakfast,
+            lunch: data.lunch,
+            dinner: data.dinner,
+            supper: data.supper,
+            totalKcal: data.totalKcal,
+            totalProteins: data.totalProteins,
+          });
         });
-      });
-      setMealData(fetchedData);
-    };
+        setMealData(fetchedData);
+      }
 
-    fetchMealData();
+      fetchMealData();
+    };
   }, []);
 
   const calculatePercentage = (kcal: number, proteins: number) => {
@@ -139,16 +144,28 @@ export default function Component() {
                     </CircularProgress>
                   </TableCell>
                   <TableCell>
-                  <MealCell mealName={meal.breakfast.name} iconName={meal.breakfast.icon} />
+                    <MealCell
+                      mealName={meal.breakfast.name}
+                      iconName={meal.breakfast.icon}
+                    />
                   </TableCell>
                   <TableCell>
-                  <MealCell mealName={meal.lunch.name} iconName={meal.lunch.icon} />
+                    <MealCell
+                      mealName={meal.lunch.name}
+                      iconName={meal.lunch.icon}
+                    />
                   </TableCell>
                   <TableCell>
-                  <MealCell mealName={meal.dinner.name} iconName={meal.dinner.icon} />
+                    <MealCell
+                      mealName={meal.dinner.name}
+                      iconName={meal.dinner.icon}
+                    />
                   </TableCell>
                   <TableCell>
-                  <MealCell mealName={meal.supper.name} iconName={meal.supper.icon} />
+                    <MealCell
+                      mealName={meal.supper.name}
+                      iconName={meal.supper.icon}
+                    />
                   </TableCell>
                   <TableCell className="text-right">{meal.totalKcal}</TableCell>
                   <TableCell className="text-right">

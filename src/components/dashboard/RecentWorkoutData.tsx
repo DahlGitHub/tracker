@@ -6,9 +6,11 @@ import {
   limit,
   getDocs,
   Timestamp,
+  where,
 } from "firebase/firestore";
 import { db } from "../../../firebase"; // Adjust the import path according to your project structure
 import WorkoutTable from "./WorkoutTable"; // Adjust the import path according to your project structure
+import { useSession } from "@clerk/nextjs";
 
 interface WorkoutData {
   date: Timestamp;
@@ -21,14 +23,16 @@ interface WorkoutData {
 
 const RecentWorkoutData: React.FC = () => {
   const [recentWorkouts, setRecentWorkouts] = useState<WorkoutData[]>([]);
-
+  const { session } = useSession();
 
   useEffect(() => {
     const fetchRecentWorkouts = async () => {
+      if (session && session.user) {
       const q = query(
         collection(db, "workoutSchedules"),
+        where("userID", "==", session.user.id), // Assuming `userID` field exists for workouts
         orderBy("date", "desc"),
-        limit(5)
+        limit(7)
       );
       const querySnapshot = await getDocs(q);
       setRecentWorkouts(
@@ -37,6 +41,7 @@ const RecentWorkoutData: React.FC = () => {
     };
 
     fetchRecentWorkouts();
+  }
   }, []);
   
 
