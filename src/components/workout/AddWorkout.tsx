@@ -157,7 +157,7 @@ export const AddWorkout = () => {
                                 <img
                                   src={iconUrl}
                                   alt={`icon-${index}`}
-                                  className="h-6 w-6"
+                                  className="h-10 w-10"
                                 />
                               </SelectItem>
                             ))}

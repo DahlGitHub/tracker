@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, Check, MoreHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -43,6 +43,7 @@ import { Badge } from "../ui/badge";
 import EditProgram from "./EditWorkout";
 import { ProgramToolbar } from "./WorkoutToolbar";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { ExercisesPopover } from "../ExercisesPopover";
 
 export type Workout = {
   docId: string;
@@ -54,68 +55,6 @@ export type Workout = {
   status: string;
   updatedAt: number;
 };
-
-const ExercisesPopover = ({
-  exercises,
-}: {
-  exercises: { label: string; value: string }[];
-}) => (
-  <Popover>
-    <PopoverTrigger asChild>
-      <div className="flex items-center">
-        {exercises.slice(0, 3).map((exercise, index) => (
-          <Avatar
-            key={index}
-            className="h-8 w-8 bg-zinc-800 border p-1 border-zinc-600 -ml-2 first:ml-0"
-          >
-            <AvatarImage
-              src={
-                exercise.value.startsWith("http")
-                  ? exercise.value
-                  : "https://cdn-icons-png.flaticon.com/512/4072/4072281.png"
-              }
-              alt={exercise.label}
-            />
-            <AvatarFallback>{exercise.label.charAt(0)}</AvatarFallback>
-          </Avatar>
-        ))}
-        {exercises.length > 3 && (
-          <Avatar className="h-6 w-6 border p-1 bg-zinc-800 border-zinc-600 -ml-2">
-            <AvatarFallback>+{exercises.length - 3}</AvatarFallback>
-          </Avatar>
-        )}
-      </div>
-    </PopoverTrigger>
-    <PopoverContent>
-      <div className="flex flex-col items-start gap-2">
-        {exercises.map((exercise, index) => (
-          <div
-            key={index}
-            className="flex items-center gap-2 my-1 w-full hover:bg-zinc-900"
-          >
-            <Avatar className="h-10 w-10 bg-zinc-800 border p-1 border-zinc-600">
-              {exercise.value.startsWith("http") ? (
-                <AvatarImage src={exercise.value} alt={exercise.label} />
-              ) : (
-                <AvatarFallback>{exercise.label.charAt(0)}</AvatarFallback>
-              )}
-              <AvatarImage
-                src={
-                  exercise.value.startsWith("http")
-                    ? exercise.value
-                    : "https://cdn-icons-png.flaticon.com/512/4072/4072281.png"
-                }
-                alt={exercise.label}
-              />
-              <AvatarFallback>{exercise.label.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <span>{exercise.label}</span>
-          </div>
-        ))}
-      </div>
-    </PopoverContent>
-  </Popover>
-);
 
 export const columns: ColumnDef<Workout>[] = [
   {
@@ -131,7 +70,7 @@ export const columns: ColumnDef<Workout>[] = [
             <AvatarFallback>SD</AvatarFallback>
           </Avatar>
           <div className="grid gap-1">
-            <p className="text-sm font-semibold leading-none">{data.title}</p>
+            <p className="font-medium text-zinc-300">{data.title}</p>
             <p className="text-xs text-gray-500">{data.muscleType}</p>
           </div>
         </div>
@@ -147,7 +86,7 @@ export const columns: ColumnDef<Workout>[] = [
       return (
         <div className="flex flex-wrap gap-1">
           {data.muscles.map((muscle, index) => (
-            <Badge key={index}>{muscle.label}</Badge>
+            <Badge variant="secondary" className="text-zinc-300" key={index}>{muscle.label}</Badge>
           ))}
         </div>
       );
@@ -180,14 +119,16 @@ export const columns: ColumnDef<Workout>[] = [
     cell: ({ row }) => {
       const data = row.original;
       return (
-        <div className="ml-2 flex items-center">
+        <div className="ml-2 flex">
             {data.status == 'Active' ? (
-                <Badge className="text-xs bg-green-100">
+                <Badge variant="secondary" className="text-xs bg-green-800 bg-opacity-30 gap-1 items-center">
+                    <Check className='h-3.5 w-3.5 text-green-700' />
                     <span className='text-green-700'>{data.status}</span>
                 </Badge>
             ) : (
-                <Badge variant='secondary' className="text-xs">
-                    <span className='text-gray-600'>{data.status}</span>
+                <Badge variant='secondary' className="text-xs bg-red-800 bg-opacity-30 gap-1 items-center">
+                    <X className='h-3.5 w-3.5 text-red-500' />
+                    <span className='text-red-500'>{data.status}</span>
                 </Badge>
             )}
         </div>
