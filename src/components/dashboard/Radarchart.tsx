@@ -13,16 +13,15 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { TrendingUp } from "lucide-react";
-// Sample raw data
-const rawData = [
-    { subject: "Chest", count: 15 },
-    { subject: "Shoulders", count: 12 },
-    { subject: "Back", count: 18 },
-    { subject: "Arms", count: 20 },
-    { subject: "Abs", count: 10 },
-    { subject: "Legs", count: 14 },
-  ];
+
+import { useSession } from "@clerk/nextjs"
+import { useEffect, useState } from "react";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../../firebase";
+
+type Workout = {
+  muscleGroup: string[];
+};
   
   const chartConfig = {
     desktop: {
@@ -31,34 +30,65 @@ const rawData = [
     },
   } satisfies ChartConfig
 
-  // Calculate the maximum count
-  const maxCount = Math.max(...rawData.map(item => item.count));
-  
-  // Normalize the data to percentages
-  const data = rawData.map(item => ({
-    subject: item.subject,
-    Percentage: (item.count / maxCount) * 100,
-  }));
-  
-  
   const Radarchart = () => {
+    const [muscleGroupData, setMuscleGroupData] = useState<{ subject: string; count: number }[]>([]);
+    const { session } = useSession();
+
+    useEffect(() => {
+      const fetchWorkoutSchedules = async () => {
+        if (!session || !session.user) return;
+  
+        try {
+          const q = query(
+            collection(db, "workoutSchedules"),
+            where("userID", "==", session.user.id)
+          );
+          const querySnapshot = await getDocs(q);
+          const workouts: Workout[] = querySnapshot.docs.map((doc) => ({
+            muscleGroup: doc.data().muscleGroup,
+          }));
+  
+          // Aggregate muscle group data
+          const muscleGroupCount = workouts.reduce((acc, workout) => {
+            workout.muscleGroup.forEach((group: string) => {
+              acc[group] = (acc[group] || 0) + 1;
+            });
+            return acc;
+          }, {} as Record<string, number>);
+  
+          const data = Object.entries(muscleGroupCount).map(
+            ([subject, count]) => ({
+              subject,
+              count,
+            })
+          );
+  
+          setMuscleGroupData(data);
+        } catch (error) {
+          console.error("Error fetching workout schedules: ", error);
+        }
+      };
+  
+      fetchWorkoutSchedules();
+    }, [session]);
+
     return (
       <Card>
-      <CardHeader className="items-center pb-4">
-        <CardTitle>Radar Chart - Grid Circle</CardTitle>
+      <CardHeader className=" pb-4">
+        <CardTitle>Muscle Groups</CardTitle>
         <CardDescription>
-          Showing total visitors for the last 6 months
+          Muscle group distribution of your workout
         </CardDescription>
       </CardHeader>
       <CardContent className="pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-[260px]"
         >
-          <RadarChart data={rawData}>
+          <RadarChart data={muscleGroupData}>
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={<ChartTooltipContent />}
             />
             <PolarGrid gridType="circle" />
             <PolarAngleAxis dataKey="subject" />
@@ -74,6 +104,7 @@ const rawData = [
           </RadarChart>
         </ChartContainer>
       </CardContent>
+      {/*}
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 font-medium leading-none">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
@@ -82,6 +113,7 @@ const rawData = [
           January - June 2024
         </div>
       </CardFooter>
+      */}
     </Card>
     );
   };
