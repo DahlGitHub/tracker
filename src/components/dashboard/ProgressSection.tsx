@@ -10,6 +10,7 @@ import { db } from "../../../firebase";
 import ProgressCard from "@/components/dashboard/Progress";
 import { fetchGoals, Goals } from "./GoalsData";
 import { useSession } from "@clerk/nextjs";
+import { Beef, Droplet, Flame, Wheat } from "lucide-react";
 
 interface ProgressSectionProps {
   selectedDate: Date;
@@ -29,7 +30,12 @@ const getEndOfDayTimestamp = (date: Date) => {
 
 const ProgressSection: React.FC<ProgressSectionProps> = ({ selectedDate }) => {
   const { session } = useSession();
-  const [goals, setGoals] = useState<Goals>({ kcal: 0, proteins: 0, fat: 0, carbs: 0 });
+  const [goals, setGoals] = useState<Goals>({
+    calories: 0,
+    protein: 0,
+    fat: 0,
+    carbs: 0,
+  });
   const [dailyIntake, setDailyIntake] = useState({
     totalKcal: 0,
     totalProteins: 0,
@@ -85,32 +91,36 @@ const ProgressSection: React.FC<ProgressSectionProps> = ({ selectedDate }) => {
     fetchDailyIntake();
   }, [selectedDate]);
 
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-
       <ProgressCard
         title="Calories"
         value={dailyIntake.totalKcal}
-        goal={goals.kcal}
+        goal={goals.calories}
         key="calories"
+        icon={<Flame size={24} />}
       />
       <ProgressCard
         title="Proteins"
         value={dailyIntake.totalProteins}
-        goal={goals.proteins}
-        key="proteins"
+        goal={goals.protein}
+        key="protein"
+        icon={<Beef size={24} />}
       />
       <ProgressCard
-        title="Fats"
+        title="Fat"
         value={dailyIntake.totalFat}
         goal={goals.fat}
         key="fats"
+        icon={<Droplet size={24} />}
       />
       <ProgressCard
-        title="Carbohydrates"
+        title="Carbs"
         value={dailyIntake.totalCarbs}
         goal={goals.carbs}
         key="carbs"
+        icon={<Wheat size={24} />}
       />
     </div>
   );
