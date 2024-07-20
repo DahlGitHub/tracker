@@ -2,15 +2,15 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
 
 export interface Goals {
-  kcal: number;
-  proteins: number;
+  calories: number;
+  protein: number;
   fat: number;
   carbs: number;
 }
 
 const defaultGoals: Goals = {
-  kcal: 0,
-  proteins: 0,
+  calories: 0,
+  protein: 0,
   fat: 0,
   carbs: 0,
 };
