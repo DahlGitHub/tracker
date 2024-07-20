@@ -65,7 +65,12 @@ export const WorkoutScheduleForm: React.FC<WorkoutScheduleFormProps> = ({
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: defaultValues,
+    defaultValues: {
+      date: new Date(),
+      workoutId: "",
+      intensity: "",
+    
+    },
   });
 
   useEffect(() => {

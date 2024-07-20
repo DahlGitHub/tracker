@@ -103,6 +103,7 @@ const calculateTotals = (meals: Diet[]) => {
 
 export const EditFood = React.forwardRef<HTMLDivElement, EditDataProps>(
   ({ docId, data }, ref) => {
+    EditFood.displayName = "EditFood";
     const [currentData, setCurrentData] = React.useState(data);
     const [open, setOpen] = React.useState(false);
     const [isOpen, setIsOpen] = useState(false);

@@ -29,6 +29,8 @@ import {
   IceCream,
   PiIcon,
   CherryIcon,
+  Check,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -47,14 +49,20 @@ import { Badge } from "../ui/badge";
 import EditDiet from "./EditDiet";
 import { ProgramToolbar } from "./DietToolbar";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
-import { CategoryOption, IconOption, categoryOptions, iconOptions } from "@/lib/icons";
+import {
+  CategoryOption,
+  IconOption,
+  categoryOptions,
+  iconOptions,
+} from "@/lib/icons";
+import { Avatar } from "../ui/avatar";
 
 export type Diet = {
   id: any;
   docId: string;
   name: string;
   icon: string;
-  meal: "breakfast" | "lunch" | "dinner" | "supper";
+  meal: "Breakfast" | "Lunch" | "Dinner" | "Supper";
   items: {
     productId: string;
     gram: number;
@@ -64,16 +72,13 @@ export type Diet = {
     title: string;
     carbs: number;
   }[];
+  status: string;
   updatedAt: number;
-};
-
-const getCategoryOption = (meal: string): CategoryOption | undefined => {
-  return categoryOptions.find((option) => option.value === meal);
 };
 
 const getIconOptions = (icon: string): IconOption | undefined => {
   return iconOptions.find((option) => option.value === icon);
-}
+};
 
 const formatNumber = (num: number) => parseFloat(num.toFixed(2));
 
@@ -98,6 +103,63 @@ const calculateTotals = (diet: { items: any[] }) => {
   };
 };
 
+const DietPopover = ({
+  items,
+  name,
+}: {
+  items: { title: string; gram: number; kcal: number; fat: number; carbs: number; proteins: number }[];
+  name: string;
+}) => (
+  <Popover>
+    <PopoverTrigger asChild>
+      <div className="flex items-center">
+        {items.slice(0, 3).map((item, index) => (
+          <Avatar
+            key={index}
+            className="h-8 w-8 bg-zinc-800 border p-1 border-zinc-600 -ml-2 first:ml-0 flex items-center justify-center"
+          >
+            <CherryIcon className="h-4 w-4 text-white" />
+          </Avatar>
+        ))}
+        {items.length > 3 && (
+          <Avatar className="h-6 w-6 border p-1 bg-zinc-800 border-zinc-600 -ml-2 flex items-center justify-center">
+            <span className="text-xs text-white">+{items.length - 3}</span>
+          </Avatar>
+        )}
+      </div>
+    </PopoverTrigger>
+    <PopoverContent className="w-full">
+      <div className="flex flex-col items-start">
+        <span className="font-bold">{name}</span>
+        <Table className="w-full">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="p-1 w-[125px]">Item</TableHead>
+              <TableHead className="p-1 w-[75px]">Gram</TableHead>
+              <TableHead className="p-1 w-[75px]">Calories</TableHead>
+              <TableHead className="p-1 w-[75px]">Fat</TableHead>
+              <TableHead className="p-1 w-[75px]">Carbs</TableHead>
+              <TableHead className="p-1 w-[75px]">Proteins</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {items.map((item, index) => (
+              <TableRow key={index} className="hover:bg-zinc-900">
+                <TableCell className="p-1">{item.title}</TableCell>
+                <TableCell className="p-1">{item.gram}</TableCell>
+                <TableCell className="p-1">{item.kcal}</TableCell>
+                <TableCell className="p-1">{item.fat}</TableCell>
+                <TableCell className="p-1">{item.carbs}</TableCell>
+                <TableCell className="p-1">{item.proteins}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </PopoverContent>
+  </Popover>
+);
+
 export const columns: ColumnDef<Diet>[] = [
   {
     accessorKey: "name",
@@ -106,76 +168,17 @@ export const columns: ColumnDef<Diet>[] = [
       const data = row.original;
       const iconOptions = getIconOptions(data.icon);
       return (
-        <div className="flex items-center">
-          <Badge variant="secondary" className='p-1.5'>
-          {iconOptions?.icon && (
-              <iconOptions.icon className="h-4 w-4" />
-            )}
+        <div className="flex items-center gap-2">
+          <Badge variant="secondary" className="p-1.5">
+            {iconOptions?.icon && <iconOptions.icon className="h-4 w-4" />}
           </Badge>
-          <span className="pl-2">{data.name}</span>
+          <div className="grid gap-1">
+            <p className="text-sm font-medium">{data.name}</p>
+            <p className="text-xs text-gray-500">{data.meal}</p>
+          </div>
         </div>
       );
     },
-    size: 300,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "meal",
-    header: "Meal",
-    cell: ({ row }) => {
-      const data = row.original;
-      const categoryOption = getCategoryOption(data.meal);
-      return (
-        <div className="flex items-start">
-          <Badge
-            variant="secondary"
-            className={`px-2 py-1 ${categoryOption?.color}`}
-          >
-            {categoryOption?.icon && (
-              <categoryOption.icon className="h-4 w-4" />
-            )}
-            <span className="pl-1">{categoryOption?.label}</span>
-          </Badge>
-        </div>
-      );
-    },
-    size: 300,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "items",
-    header: "Items",
-    cell: ({ row }) => {
-      const data = row.original;
-
-      return (
-        <div className="flex items-start">
-          {data.items.map((item, index) => {
-            // Find the product corresponding to the item
-
-            return (
-              <Popover key={index}>
-                <PopoverTrigger>
-                  <CherryIcon className="h-4 w-4" />
-                </PopoverTrigger>
-                <PopoverContent>
-                  <div className="p-1">
-                    {item.title}
-                    <p>Gram: {item.gram}</p>
-
-                    <p>Calories: {item.kcal} </p>
-                    <p>Fat: {item.fat} </p>
-                    <p>Carbs: {item.carbs} </p>
-                    <p>Proteins: {item.proteins} </p>
-                  </div>
-                </PopoverContent>
-              </Popover>
-            );
-          })}
-        </div>
-      );
-    },
-    size: 290,
     enableHiding: false,
   },
   {
@@ -190,8 +193,8 @@ export const columns: ColumnDef<Diet>[] = [
         </div>
       );
     },
-    size: 200,
     enableHiding: false,
+    size: 50,
   },
   {
     accessorKey: "fat",
@@ -205,8 +208,9 @@ export const columns: ColumnDef<Diet>[] = [
         </div>
       );
     },
-    size: 125,
+
     enableHiding: false,
+    size: 50,
   },
 
   {
@@ -221,7 +225,7 @@ export const columns: ColumnDef<Diet>[] = [
         </div>
       );
     },
-    size: 125,
+    size: 50,
     enableHiding: false,
   },
 
@@ -238,13 +242,68 @@ export const columns: ColumnDef<Diet>[] = [
       );
     },
     enableHiding: false,
-    size: 125,
+    size: 50,
+  },
+  {
+    accessorKey: "items",
+    header: "Products",
+    cell: ({ row }) => {
+      const data = row.original;
+
+      return (
+        <div className="flex items-start">
+          <DietPopover items={data.items} name={data.name} />
+        </div>
+      );
+    },
+    enableHiding: false,
+    size: 200,
   },
 
   {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2" size={16} />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <div className="ml-2 flex">
+          {data.status == "Active" ? (
+            <Badge
+              variant="secondary"
+              className="text-xs bg-green-800 bg-opacity-30 gap-1 items-center"
+            >
+              <Check className="h-3.5 w-3.5 text-green-700" />
+              <span className="text-green-700">{data.status}</span>
+            </Badge>
+          ) : (
+            <Badge
+              variant="secondary"
+              className="text-xs bg-red-800 bg-opacity-30 gap-1 items-center"
+            >
+              <X className="h-3.5 w-3.5 text-red-500" />
+              <span className="text-red-500">{data.status}</span>
+            </Badge>
+          )}
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
     id: "actions",
-    size: 50,
-    
+
     cell: ({ row }) => {
       return (
         <DropdownMenu>
@@ -281,6 +340,7 @@ export const columns: ColumnDef<Diet>[] = [
         </DropdownMenu>
       );
     },
+    size: 50,
   },
 ];
 
@@ -325,14 +385,7 @@ export function DataTable<TData, TValue>({
     <div>
       <ProgramToolbar table={table} />
       <div className="rounded-md border bg-zinc-950">
-        <Table
-          // Added for column width
-          {...{
-            style: {
-              width: table.getCenterTotalSize(),
-            },
-          }}
-        >
+        <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

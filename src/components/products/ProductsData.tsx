@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { MoreHorizontal, ArrowUpDown, ImagePlus, LinkIcon, IceCream, Activity } from 'lucide-react';
+import { MoreHorizontal, ArrowUpDown, ImagePlus, LinkIcon, IceCream, Activity, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -59,7 +59,16 @@ const getIconOptions = (icon: string): IconOption | undefined => {
 export const columns: ColumnDef<Program>[] = [
   {
     accessorKey: 'title',
-    header: 'Product (100g serving)',
+    header: ({ column }) => {
+      return (
+        <div className='flex flex-row items-center gap-2'>
+          Product
+          <span className='text-xs'>
+          {("(100g serving)")}
+          </span>
+        </div>
+      );
+    },
     cell: ({ row }) => {
       const data = row.original;
       const iconOptions = getIconOptions(data.icon);
@@ -78,7 +87,15 @@ export const columns: ColumnDef<Program>[] = [
   },
   {
     accessorKey: 'kcal',
-    header: 'Calories',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className="h-8 px-2">
+          Kcal
+          <ArrowUpDown className="ml-2" size={16} />
+        </Button>
+      );
+    
+    },
     cell: ({ row }) => {
       const data = row.original;
       return (
@@ -91,7 +108,15 @@ export const columns: ColumnDef<Program>[] = [
   },
   {
     accessorKey: 'fat',
-    header: 'Fat (g)',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className="h-8 px-2">
+          Fat
+          <ArrowUpDown className="ml-2" size={16} />
+        </Button>
+      );
+    
+    },
     cell: ({ row }) => {
       const data = row.original;
       return (
@@ -105,7 +130,15 @@ export const columns: ColumnDef<Program>[] = [
 
   {
     accessorKey: 'carbs',
-    header: 'Carbs (g)',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className="h-8 px-2">
+          Carbs
+          <ArrowUpDown className="ml-2" size={16} />
+        </Button>
+      );
+    
+    },
     cell: ({ row }) => {
       const data = row.original;
       return (
@@ -118,8 +151,16 @@ export const columns: ColumnDef<Program>[] = [
   },
 
   {
-    accessorKey: 'protein',
-    header: 'Proteins (g)',
+    accessorKey: 'proteins',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className="h-8 px-2">
+          Proteins
+          <ArrowUpDown className="ml-2" size={16} />
+        </Button>
+      );
+    
+    },
     cell: ({ row }) => {
       const data = row.original;
       return (
@@ -147,14 +188,16 @@ export const columns: ColumnDef<Program>[] = [
     cell: ({ row }) => {
       const data = row.original;
       return (
-        <div className="ml-2 flex items-center">
+        <div className="ml-2 flex">
             {data.status == 'Active' ? (
-                <Badge className="text-xs bg-green-100">
+                <Badge variant="secondary" className="text-xs bg-green-800 bg-opacity-30 gap-1 items-center">
+                    <Check className='h-3.5 w-3.5 text-green-700' />
                     <span className='text-green-700'>{data.status}</span>
                 </Badge>
             ) : (
-                <Badge variant='secondary' className="text-xs">
-                    <span className='text-gray-600'>{data.status}</span>
+                <Badge variant='secondary' className="text-xs bg-red-800 bg-opacity-30 gap-1 items-center">
+                    <X className='h-3.5 w-3.5 text-red-500' />
+                    <span className='text-red-500'>{data.status}</span>
                 </Badge>
             )}
         </div>

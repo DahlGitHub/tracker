@@ -113,6 +113,7 @@ const NewDietForm = () => {
             fat: formatNumber(product.fat * (item.gram / 100)), // Calculate fat based on gram
             carbs: formatNumber(product.carbs * (item.gram / 100)), // Calculate carbs based on gram
             proteins: formatNumber(product.proteins * (item.gram / 100)), // Calculate proteins based on gram
+            title: product.title,
           };
         } else {
           return item;
@@ -123,6 +124,7 @@ const NewDietForm = () => {
         ...data,
         items: itemsWithNutrition,
         userID: session?.user.id,
+        status: "Active",
         updatedAt: Date.now(),
       });
       setIsOpen(false);
@@ -183,7 +185,6 @@ const NewDietForm = () => {
                           {categoryOptions.map((option) => (
                             <SelectItem key={option.value} value={option.value}>
                               <div className="flex items-center">
-                                <option.icon className="h-4 w-4 mr-2" />
                                 <span>{option.label}</span>
                               </div>
                             </SelectItem>

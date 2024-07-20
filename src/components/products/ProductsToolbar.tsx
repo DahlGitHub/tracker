@@ -23,7 +23,7 @@ export function ProgramToolbar<TData>({ table }: ProgramToolbarProps<TData>) {
     <div className="flex flex-col sm:flex-row justify-between py-4">
       <div className="flex flex-1">
         <Input
-          placeholder="Search title..."
+          placeholder="Search product..."
           value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
           onChange={event =>
             table.getColumn('title')?.setFilterValue(event.target.value)

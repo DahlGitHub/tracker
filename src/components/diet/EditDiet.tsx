@@ -149,6 +149,7 @@ export const EditProgram = React.forwardRef<HTMLDivElement, EditDataProps>(
               fat: formatNumber(product.fat * (item.gram / 100)), // Calculate fat based on gram
               carbs: formatNumber(product.carbs * (item.gram / 100)), // Calculate carbs based on gram
               proteins: formatNumber(product.proteins * (item.gram / 100)), // Calculate proteins based on gram
+              title: product.title,
             };
           } else {
             return item;

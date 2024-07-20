@@ -27,6 +27,7 @@ import { Plus } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
 import { iconOptions } from '@/lib/icons'; // Import the icon options
 import { useSession } from '@clerk/nextjs';
+import Search from '../search/Search';
 
 const FormSchema = z.object({
   title: z.string().min(2, { message: 'Title must be at least 2 characters.' }).max(100, { message: 'Title must be no longer than 100 characters.' }),
@@ -61,6 +62,13 @@ export const AddProgram = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleSelectFood = (food: any) => {
+    form.setValue('kcal', food.calories);
+    form.setValue('fat', food.fat);
+    form.setValue('carbs', food.carbs);
+    form.setValue('proteins', food.proteins);
   };
 
   return (
@@ -120,7 +128,9 @@ export const AddProgram = () => {
                   )}
                 />
               </div>
-
+              <div>
+                <Search onSelectFood={handleSelectFood} />
+              </div>
               <div className="flex flex-row space-x-4">
                 <FormField
                   control={form.control}

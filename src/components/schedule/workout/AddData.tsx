@@ -4,6 +4,7 @@ import { z } from "zod";
 import { addDoc, collection, doc, getDoc } from "firebase/firestore";
 import { db } from "../../../../firebase";
 import { useSession } from "@clerk/nextjs";
+import { set } from "date-fns";
 
 const AddData = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +50,7 @@ const AddData = () => {
     <WorkoutScheduleForm
       isSubmitting={isSubmitting}
       onSubmit={handleSubmit}
-      defaultValues={{}}
+      defaultValues={{date: new Date(), workoutId: "", intensity: ""}}
       submitButtonText="Add Workout Schedule"
       mode={true}
     />

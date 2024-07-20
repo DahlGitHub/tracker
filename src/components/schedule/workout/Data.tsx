@@ -106,7 +106,7 @@ export const columns: ColumnDef<WorkoutSchedule>[] = [
       return (
         <div className="flex flex-wrap gap-1">
           {row.original.muscleGroup.map((muscle, index) => (
-            <Badge key={index}>{muscle}</Badge>
+            <Badge variant="secondary" key={index}>{muscle}</Badge>
           ))}
         </div>
       );

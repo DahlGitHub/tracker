@@ -237,7 +237,7 @@ export const EditProgram = React.forwardRef<HTMLDivElement, EditDataProps>(
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="Active">Active</SelectItem>
-                          <SelectItem value="Inactive">Inactive</SelectItem>
+                          <SelectItem value="Disabled">Disabled</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
