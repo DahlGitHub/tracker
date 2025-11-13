@@ -1,3 +1,3 @@
-# Currently changed the Firebase SDK Creds
+Currently changed the Firebase SDK Creds
 
-# src/components/ui/background-beams.tsx -- is overlaying login page
+src/components/ui/background-beams.tsx -- is overlaying login page
