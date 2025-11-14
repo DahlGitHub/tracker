@@ -12,7 +12,7 @@ import { getStorage } from "firebase/storage";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAFDVAIvLjOUHlMgmiBNpsI64L2RcRTeDk",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
 
   authDomain: "tracker-d2773.firebaseapp.com",
 
