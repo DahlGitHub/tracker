@@ -50,7 +50,7 @@ export default function Page() {
             </div>
             <div className="flex justify-center p-4">
               <SignIn forceRedirectUrl={"/dashboard"} />
-              <BackgroundBeams />
+              {/* <BackgroundBeams /> Temp disabled*/}
             </div>
           </div>
         </main>
